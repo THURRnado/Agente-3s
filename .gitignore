@@ -3,3 +3,5 @@ venv/
 notas_fiscais_pdf
 __pycache__
 tmp/
+dados_excel
+notas_fiscais_test
