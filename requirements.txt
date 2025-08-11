@@ -18,6 +18,7 @@ distro==1.9.0
 docstring_parser==0.17.0
 dotenv==0.9.9
 durationpy==0.10
+et_xmlfile==2.0.0
 fastapi==0.116.1
 filelock==3.18.0
 flatbuffers==25.2.10
@@ -50,6 +51,7 @@ numpy==2.3.2
 oauthlib==3.3.1
 onnxruntime==1.22.1
 openai==1.99.3
+openpyxl==3.1.5
 opentelemetry-api==1.36.0
 opentelemetry-exporter-otlp-proto-common==1.36.0
 opentelemetry-exporter-otlp-proto-grpc==1.36.0
