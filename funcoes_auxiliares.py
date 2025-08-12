@@ -3,12 +3,23 @@ import pytesseract
 from pdf2image import convert_from_path
 import pandas as pd
 
+import time
+
+# Não funciona pra pdfs escaneados
+# Roda muito rápido, porém torna o processamento do chatbot mais lento
 def extrai_texto(arquivo):
     with pdfplumber.open(arquivo) as pdf:
+        texto=""
         for page in pdf.pages:
-            print(page.extract_text())
+            texto += page.extract_text()
+        if texto:
+            print(texto)
+        else:
+            print("Não foi possível extrair nenhum texto!")
 
 
+# Funciona para pdfs escaneados
+# Roda muito mais lento, porém torna o processamento do chatbot mais rápido
 def extrai_texto_ocr(arquivo):
     pages = convert_from_path(arquivo, 300)
 
@@ -16,7 +27,11 @@ def extrai_texto_ocr(arquivo):
     for page in pages:
         texto_extraido += pytesseract.image_to_string(page, lang="por") + "\n"
 
-    print(texto_extraido)
+    if texto_extraido:
+        print("Texto extraido com sucesso")
+        return texto_extraido
+    else:
+        print("Não foi possível extrair nenhum texto!")
 
 
 def json_to_df(nome_arquivo, json_data):
@@ -37,3 +52,20 @@ def json_to_df(nome_arquivo, json_data):
     """
     df = pd.json_normalize(json_data)
     df.to_excel("dados_excel/" + nome_arquivo + ".xlsx", index=False)
+
+
+if __name__ == "__main__":
+
+    arquivo = "notas_fiscais_pdf/2025-07-28 ALBA FERNANDO NF 1000037 T 53006.pdf"
+
+    print("Sem OCR\n")
+    inicio = time.time()
+    extrai_texto(arquivo)
+    fim = time.time()
+    print(f"\nTempo de execução: {(fim-inicio)}\n")
+    print("/////////////////////////////////////////////////////////////////////////////////////////////")
+    print("\n\nCom OCR:\n")
+    inicio = time.time()
+    extrai_texto_ocr(arquivo)
+    fim = time.time()
+    print(f"\nTempo de execução: {(fim-inicio)}\n")
