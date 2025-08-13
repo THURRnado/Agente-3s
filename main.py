@@ -15,7 +15,7 @@ def processar(arquivo):
     agent = Agent(
         name="Agente de pdf",
         model=Groq(id="llama-3.3-70b-versatile"),
-        tools=[json_to_df],  # Cuidado aqui, depende da API da agno
+        tools=[json_to_df],
         instructions=(
             f"Aqui estão os dados extraídos da nota fiscal:\n\n"
             f"{dados}\n\n"
@@ -59,5 +59,5 @@ def processar(arquivo):
 
 
 if __name__ == "__main__":
-    arquivo = "notas_fiscais_pdf/2025-11-30 ALBA SA MIX FAT 003 R$ 18.557,50 T 55666.pdf"
+    arquivo = "notas_fiscais_test/2025-07-28 ALBA JURACY FRANCISCO NF 62 R$ 6.500,00 T 56494.pdf"
     processar(arquivo)
