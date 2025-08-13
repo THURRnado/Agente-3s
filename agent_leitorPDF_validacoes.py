@@ -3,7 +3,6 @@ from agno.models.groq import Groq
 from agno.models.openai import OpenAIChat
 from funcoes_auxiliares import json_to_df, extrai_texto_ocr
 from dotenv import load_dotenv
-import json
 import time
 
 load_dotenv()
