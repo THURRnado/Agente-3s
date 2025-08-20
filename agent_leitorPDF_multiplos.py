@@ -1,7 +1,7 @@
 from agno.agent import Agent
 from agno.models.groq import Groq
 from agno.models.openai import OpenAIChat
-from funcoes_auxiliares import json_to_df, extrai_texto_ocr
+from funcoes_auxiliares import json_to_df, extrai_texto_ocr, extrai_texto_markitdown, pdf_tem_texto
 from dotenv import load_dotenv
 import time
 
@@ -81,7 +81,12 @@ def processar(arquivo):
         print(f"Processando arquivo: {arquivo}")
         
         # Extração de texto
-        dados = extrai_texto_ocr(arquivo)
+        if pdf_tem_texto(arquivo):
+            print("Usando markitdown")
+            dados = extrai_texto_markitdown(arquivo)  # PDF digital
+        else:
+            print("Usando OCR padrão")
+            dados = extrai_texto_ocr(arquivo)  # PDF escaneado
         if not dados or len(dados.strip()) < 10:
             raise ValueError("Texto extraído inválido")
         
@@ -110,5 +115,5 @@ def processar(arquivo):
         return None
 
 if __name__ == "__main__":
-    arquivo = "notas_fiscais_test/2025-07-29 ALBA JOSE ROMULO NF 1000659 R$ 250,00 T 53031.pdf"
+    arquivo = "notas_fiscais_pdf/2025-07-24 ALBA LOQFÁCIL FATURA 192619 R$ 100,00 T 56381.pdf"
     processar(arquivo)

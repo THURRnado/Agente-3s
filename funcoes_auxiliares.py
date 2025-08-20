@@ -4,6 +4,16 @@ from pdf2image import convert_from_path
 import pandas as pd
 
 import time
+import fitz
+
+
+def pdf_tem_texto(arquivo):
+    doc = fitz.open(arquivo)
+    for page in doc:
+        texto = page.get_text().strip()
+        if texto:
+            return True  # tem texto embutido
+    return False  # provavelmente é imagem
 
 # Não funciona pra pdfs escaneados
 # Roda muito rápido, porém torna o processamento do chatbot mais lento
@@ -32,6 +42,27 @@ def extrai_texto_ocr(arquivo):
         return texto_extraido
     else:
         print("Não foi possível extrair nenhum texto!")
+
+
+from markitdown import MarkItDown
+
+def extrai_texto_markitdown(arquivo):
+    md = MarkItDown()  # usa OCR automaticamente em PDFs/imagens
+
+    try:
+        resultado = md.convert(arquivo)
+        texto_extraido = resultado.text_content
+
+        if texto_extraido.strip():
+            print("Texto extraído com sucesso!")
+            return texto_extraido
+        else:
+            print("Não foi possível extrair nenhum texto!")
+            return ""
+    except Exception as e:
+        print(f"Erro ao processar o arquivo: {e}")
+        return ""
+
 
 
 def json_to_df(nome_arquivo, json_data):
