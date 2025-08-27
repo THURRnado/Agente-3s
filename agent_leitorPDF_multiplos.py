@@ -25,18 +25,32 @@ def processar_com_modelo_alternativo(agent):
     return agent.run()
 
 def criar_agente_extracao(dados):
+    
     instrucoes = """Você é um especialista em processamento de notas fiscais. Sua tarefa é:
     1. Analisar o texto extraído da nota fiscal
     2. Extrair APENAS os campos solicitados
     3. Retornar um JSON válido sem comentários ou texto adicional
+    4. Caso não seja possível recuperar a informação de determinado campo, deixe esse campo vazio
+    5. Dados numéricos retorne em float
     
-    Campos possíveis (inclua apenas os encontrados no texto):
-    - chave_acesso, numero_nfs, numero_dps, competencia
-    - serie_dps, data_hora_emissao_nfs, data_hora_emissao_dps
-    - emitente_*, tomador_*, servico_*, valor_*, issqn_*
-    - outros campos tributários
+    Campos possíveis (inclua somente os campos abaixo):
+    - tomador_razao_social
+    - tomador_cnpj
+    - prestador_razao social
+    - prestador_cnpj
+    - valor_total_nota 
+    - issqn_retido
+    - irrf_retido
+    - pis_retido
+    - cofins_retido
+    - inss_retido
+    - csll_retido
+    - outras_retenções
+    - descrição_serviço
+    - data_nota
     
-    Dados extraídos:
+    Dados extraídos: 
+
     {dados}
     """.format(dados=dados)
     
@@ -53,14 +67,25 @@ def criar_agente_validacao(dados, json_data):
     1. Analisar o texto extraído da nota fiscal
     2. Analisar se os dados contidos no JSON estão em conformidade com o que está no nota fiscal
     3. Modificar os dados caso não estejam em conformidade e sem comentários adicionais
-    4. Usar a função 'json_to_df' para tratar os dados em JSON
-    5. O parâmetro 'nome_arquivo' passado no 'json_to_df' deve ser composto por ('emitente_nome'+'-'+'tomador_nome') se possível
+    4. Não modificar nome de colunas, somente os dados
+    5. Usar a função 'json_to_df' para tratar os dados em JSON
+    6. O parâmetro 'nome_arquivo' passado no 'json_to_df' deve ser composto por ('emitente_nome'+'-'+'tomador_nome') se possível
     
-    Campos possíveis no JSON:
-    - chave_acesso, numero_nfs, numero_dps, competencia
-    - serie_dps, data_hora_emissao_nfs, data_hora_emissao_dps
-    - emitente_*, tomador_*, servico_*, valor_*, issqn_*
-    - outros campos tributários
+    Campos no JSON:
+    - tomador_razao_social
+    - tomador_cnpj
+    - prestador_razao social
+    - prestador_cnpj
+    - valor_total_nota 
+    - issqn_retido
+    - irrf_retido
+    - pis_retido
+    - cofins_retido
+    - inss_retido
+    - csll_retido
+    - outras_retenções
+    - descrição_serviço
+    - data_nota
     
     - Dados extraídos da nota fiscal:
     {dados}
@@ -115,5 +140,5 @@ def processar(arquivo):
         return None
 
 if __name__ == "__main__":
-    arquivo = "notas_fiscais_pdf/2025-07-24 ALBA LOQFÁCIL FATURA 192619 R$ 100,00 T 56381.pdf"
+    arquivo = "notas_fiscais_pdf/2025-07-28 ALBA CASA DO CONCRETO NF 1009422 R$ 54.530,50 T 56410.pdf"
     processar(arquivo)
